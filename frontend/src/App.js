@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./style.css";
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = process.env.REACT_APP_API_BASE || "http://127.0.0.1:8000";
 
 export default function App() {
   // === State ===
