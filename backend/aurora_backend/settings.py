@@ -107,18 +107,19 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 FRONTEND_URL = "https://www.chat.parsameshkini.com"
 
 CORS_ALLOWED_ORIGINS = [
-    FRONTEND_URL,
-    "https://aurora-agent-3.onrender.com",   # Render domain fallback
+    "https://www.chat.parsameshkini.com",
+    "https://chat.parsameshkini.com",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.chat.parsameshkini.com",
+    "https://chat.parsameshkini.com",
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = [
-    FRONTEND_URL,
-    "https://aurora-agent-3.onrender.com",
-]
 
 # === Default PK ===
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
