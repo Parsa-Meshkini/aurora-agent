@@ -2,21 +2,27 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# === Load environment variables from .env ===
+# === Load .env ===
 load_dotenv()
 
-# === Base directory ===
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# === Security & Debug ===
+# === Security ===
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1")
 
 ALLOWED_HOSTS = [
-    h.strip() for h in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if h.strip()
+    *[
+        h.strip()
+        for h in os.getenv("ALLOWED_HOSTS", "").split(",")
+        if h.strip()
+    ],
+    "aurora-backend.onrender.com",
+    "localhost",
+    "127.0.0.1",
 ]
 
-# === Installed apps ===
+# === Installed Apps ===
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -29,23 +35,24 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
 
-    # Local apps
+    # Local
     "chat",
 ]
 
 # === Middleware ===
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",      # ✅ MUST GO FIRST
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# === URLs ===
 ROOT_URLCONF = "aurora_backend.urls"
 
 # === Templates ===
@@ -70,16 +77,12 @@ WSGI_APPLICATION = "aurora_backend.wsgi.application"
 # === Database ===
 DATABASES = {
     "default": {
-        "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.getenv("DB_NAME", BASE_DIR / "db.sqlite3"),
-        "USER": os.getenv("DB_USER", ""),
-        "PASSWORD": os.getenv("DB_PASSWORD", ""),
-        "HOST": os.getenv("DB_HOST", ""),
-        "PORT": os.getenv("DB_PORT", ""),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
-# === Password validation ===
+# === Password Validation ===
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -93,34 +96,34 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# === Static files (for Render/Heroku) ===
+# === Static Files for Render ===
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# === CORS & CSRF ===
+# === ✅ CORS SETTINGS (CLEAN + CORRECT) ===
+
+# Frontend URL
+FRONTEND_URL = "https://www.chat.parsameshkini.com"
+
 CORS_ALLOWED_ORIGINS = [
-    o.strip()
-    for o in os.getenv(
-        "CORS_ALLOWED_ORIGINS",
-        "http://127.0.0.1:3000,http://localhost:3000",
-    ).split(",")
-    if o.strip()
+    FRONTEND_URL,
+    "https://aurora-agent-3.onrender.com",   # Render domain fallback
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    o.strip()
-    for o in os.getenv(
-        "CSRF_TRUSTED_ORIGINS",
-        "http://127.0.0.1:3000,http://localhost:3000",
-    ).split(",")
-    if o.strip()
+    FRONTEND_URL,
+    "https://aurora-agent-3.onrender.com",
 ]
 
-# === Default primary key ===
+# === Default PK ===
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# === REST Framework (Optional, minimal setup) ===
+# === DRF ===
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
