@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from dotenv import load_dotenv
@@ -12,6 +13,7 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 # =========================
 # 💬 AURORA - Custom AI Agent
 # =========================
+@csrf_exempt
 @api_view(['POST'])
 def chat_with_ai(request):
     try:
@@ -50,7 +52,11 @@ def chat_with_ai(request):
         full_prompt = f"{context}\nUser: {user_message}\nAurora:"
 
         response = model.generate_content(full_prompt)
-        answer = response.text if hasattr(response, "text") and response.text else "Sorry, I didn’t understand that."
+        answer = (
+            response.text
+            if hasattr(response, "text") and response.text
+            else "Sorry, I didn’t understand that."
+        )
 
         return Response({"reply": answer})
 
