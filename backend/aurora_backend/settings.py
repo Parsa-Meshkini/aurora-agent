@@ -17,7 +17,7 @@ ALLOWED_HOSTS = [
         for h in os.getenv("ALLOWED_HOSTS", "").split(",")
         if h.strip()
     ],
-    "aurora-backend.onrender.com",
+    "aurora-agent-1.onrender.com",
     "localhost",
     "127.0.0.1",
 ]
@@ -107,6 +107,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 FRONTEND_URL = "https://www.chat.parsameshkini.com"
 
 CORS_ALLOWED_ORIGINS = [
+    "https://aurora-agent-2.onrender.com",
     "https://www.chat.parsameshkini.com",
     "https://chat.parsameshkini.com",
     "http://localhost:3000",
@@ -114,6 +115,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://aurora-agent-2.onrender.com",
     "https://www.chat.parsameshkini.com",
     "https://chat.parsameshkini.com",
 ]
