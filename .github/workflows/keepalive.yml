@@ -1,0 +1,20 @@
+name: Keep Aurora Alive
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # runs every 5 minutes
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Backend with POST
+        run: |
+          curl -X POST "https://aurora-agent-1.onrender.com/api/ask/" \
+            -H "Content-Type: application/json" \
+            -d '{"message": "ping"}'
+
+      - name: Ping Frontend
+        run: |
+          curl -I "https://www.chat.parsameshkini.com" || true
