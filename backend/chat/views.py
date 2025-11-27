@@ -61,4 +61,4 @@ def chat_with_ai(request):
         return Response({"reply": answer})
 
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        return render(request, "404.html", status=404)

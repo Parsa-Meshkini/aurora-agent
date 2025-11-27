@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Aurora • 404</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        --aurora-green: #16a34a;
+        --aurora-teal: #22d3ee;
+        --aurora-dark: #020617;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top, #0f172a 0, #000 55%, #000 100%);
+        color: #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .aurora-layer {
+        position: fixed;
+        inset: -20%;
+        pointer-events: none;
+        z-index: 0;
+        filter: blur(60px);
+        opacity: 0.75;
+        mix-blend-mode: screen;
+      }
+
+      .aurora-blob {
+        position: absolute;
+        width: 50vw;
+        height: 50vw;
+        border-radius: 999px;
+        background: radial-gradient(circle, var(--aurora-teal), transparent 65%);
+        animation: drift 16s ease-in-out infinite alternate;
+      }
+
+      .aurora-blob:nth-child(2) {
+        background: radial-gradient(circle, var(--aurora-green), transparent 65%);
+        top: 40%;
+        left: 60%;
+        animation-duration: 22s;
+      }
+
+      .aurora-blob:nth-child(3) {
+        background: radial-gradient(circle, #38bdf8, transparent 65%);
+        top: -10%;
+        left: 10%;
+        animation-duration: 18s;
+      }
+
+      @keyframes drift {
+        0% {
+          transform: translate3d(-10%, 0, 0) scale(1);
+        }
+        50% {
+          transform: translate3d(15%, -5%, 0) scale(1.1);
+        }
+        100% {
+          transform: translate3d(0%, 10%, 0) scale(0.95);
+        }
+      }
+
+      /* Main card */
+      .wrapper {
+        position: relative;
+        z-index: 10;
+        max-width: 720px;
+        width: 100%;
+        padding: 24px;
+      }
+
+      .card {
+        border-radius: 24px;
+        padding: 32px 28px 24px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(18px);
+      }
+
+      /* Aurora logo / avatar */
+      .avatar-ring {
+        width: 72px;
+        height: 72px;
+        border-radius: 999px;
+        background: conic-gradient(
+          from 180deg,
+          var(--aurora-teal),
+          var(--aurora-green),
+          #38bdf8,
+          var(--aurora-teal)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3px;
+        margin-bottom: 16px;
+        animation: spin-slow 18s linear infinite;
+      }
+
+      .avatar-inner {
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        background: radial-gradient(circle at 30% 0%, #0f172a, #020617 65%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--aurora-teal);
+        font-weight: 700;
+        font-size: 28px;
+        letter-spacing: 0.04em;
+        text-shadow: 0 0 18px rgba(34, 211, 238, 0.8);
+      }
+
+      @keyframes spin-slow {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        color: #9ca3af;
+        margin-bottom: 10px;
+      }
+
+      .badge-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #f97316;
+        box-shadow: 0 0 10px #f97316;
+      }
+
+      .heading-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 8px;
+      }
+
+      .title-block h1 {
+        font-size: clamp(34px, 4vw, 40px);
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+
+      .title-block h1 span.code {
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(148, 163, 184, 0.9);
+      }
+
+      .subtitle {
+        color: #9ca3af;
+        font-size: 14px;
+        margin-top: 4px;
+      }
+
+      .glitch {
+        position: relative;
+        display: inline-block;
+        color: var(--aurora-teal);
+      }
+
+      .glitch::before,
+      .glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0.5;
+        mix-blend-mode: screen;
+      }
+
+      .glitch::before {
+        color: #22d3ee;
+        transform: translateX(-1px);
+        animation: glitch-left 2s infinite;
+      }
+
+      .glitch::after {
+        color: #4ade80;
+        transform: translateX(1px);
+        animation: glitch-right 2.3s infinite;
+      }
+
+      @keyframes glitch-left {
+        0%,
+        100% {
+          clip-path: inset(0 0 60% 0);
+        }
+        50% {
+          clip-path: inset(40% 0 0 0);
+        }
+      }
+
+      @keyframes glitch-right {
+        0%,
+        100% {
+          clip-path: inset(40% 0 0 0);
+        }
+        50% {
+          clip-path: inset(0 0 60% 0);
+        }
+      }
+
+      .console {
+        margin-top: 22px;
+        border-radius: 16px;
+        background: radial-gradient(
+            circle at 0 0,
+            rgba(56, 189, 248, 0.08),
+            transparent 55%
+          ),
+          rgba(15, 23, 42, 0.95);
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        padding: 14px 16px 16px;
+        font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 13px;
+        color: #e5e7eb;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.8);
+      }
+
+      .console-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+      }
+
+      .dot.red {
+        background: #f97373;
+      }
+      .dot.amber {
+        background: #facc15;
+      }
+      .dot.green {
+        background: #4ade80;
+      }
+
+      .console-title {
+        font-size: 11px;
+        color: #9ca3af;
+      }
+
+      .lines {
+        line-height: 1.6;
+      }
+
+      .prompt {
+        color: #22c55e;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 8px;
+        background: #e5e7eb;
+        margin-left: 2px;
+        animation: blink 1s steps(2, start) infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        49% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .buttons-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .btn {
+        border-radius: 999px;
+        padding: 9px 18px;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        background: rgba(15, 23, 42, 0.8);
+        color: #e5e7eb;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      }
+
+      .btn-primary {
+        border-color: transparent;
+        background: radial-gradient(circle at 10% 0, #22d3ee, #16a34a);
+        color: #020617;
+        font-weight: 600;
+        box-shadow: 0 12px 30px rgba(34, 211, 238, 0.5);
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(226, 232, 240, 0.9);
+        background: rgba(15, 23, 42, 0.9);
+      }
+
+      .btn-primary:hover {
+        background: radial-gradient(circle at 0 0, #4ade80, #22d3ee);
+      }
+
+      .btn span.icon {
+        font-size: 16px;
+      }
+
+      .footer-note {
+        margin-top: 18px;
+        font-size: 11px;
+        color: #9ca3af;
+        opacity: 0.8;
+      }
+
+      .footer-note span {
+        color: #a855f7;
+      }
+
+      @media (max-width: 640px) {
+        .card {
+          padding: 22px 18px 18px;
+        }
+        .heading-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Animated aurora background -->
+    <div class="aurora-layer">
+      <div class="aurora-blob"></div>
+      <div class="aurora-blob"></div>
+      <div class="aurora-blob"></div>
+    </div>
+
+    <div class="wrapper">
+      <div class="card">
+        <!-- Avatar / Logo -->
+        <div class="avatar-ring">
+          <div class="avatar-inner">A</div>
+        </div>
+
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Aurora • 404
+        </div>
+
+        <div class="heading-row">
+          <div class="title-block">
+            <h1>
+              <span
+                class="glitch"
+                data-text="Lost in the aurora."
+              >
+                Lost in the aurora.
+              </span>
+              <span class="code">404</span>
+            </h1>
+            <p class="subtitle">
+              The page you’re looking for drifted off into the northern lights.
+            </p>
+          </div>
+        </div>
+
+        <!-- Terminal-style explanation -->
+        <div class="console">
+          <div class="console-header">
+            <div class="dots">
+              <div class="dot red"></div>
+              <div class="dot amber"></div>
+              <div class="dot green"></div>
+            </div>
+            <div class="console-title">aurora://diagnostics</div>
+          </div>
+          <div class="lines">
+            <div><span class="prompt">parsa@aurora</span>:~$ trace-route /lost/page</div>
+            <div>➤ status: <span style="color:#f97316;">not found</span></div>
+            <div>➤ suggestion: let me guide you back home.</div>
+            <div style="margin-top:6px;">
+              <span class="prompt">aurora@assistant</span>:~$ awaiting_next_command
+              <span class="cursor">&nbsp;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="buttons-row">
+          <a href="/" class="btn btn-primary">
+            <span class="icon">🏠</span>
+            <span>Back to Aurora Home</span>
+          </a>
+          <a
+            href="https://parsameshkini.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn"
+          >
+            <span class="icon">👨‍💻</span>
+            <span>Visit Parsa’s Portfolio</span>
+          </a>
+        </div>
+
+        <p class="footer-note">
+          Aurora is a demo AI assistant created by <span>Parsa Meshkini</span>.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
