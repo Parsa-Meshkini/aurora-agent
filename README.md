@@ -85,10 +85,9 @@ Aurora includes:
   - ✅ Frontend site  
 - Prevents Render free-tier sleep  
 
----
 
 ## 📁 Project Structure
-
+```text
 aurora-agent/
 │
 ├── backend/
@@ -106,7 +105,7 @@ aurora-agent/
 │
 └── .github/workflows/
 └── keepalive.yml
----
+```
 
 ## ▶️ Running Locally
 
