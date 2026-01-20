@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import "./style.css";
 
@@ -9,6 +9,7 @@ export default function App() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]); // store all chat messages
   const [isTyping, setIsTyping] = useState(false);
+  const inputRef = useRef(null);
 
   // === Send message to backend ===
   const sendMessage = async () => {
@@ -19,6 +20,9 @@ export default function App() {
     setMessages((prev) => [...prev, newUserMessage]);
 
     setMessage(""); // clear input
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+    }
     setIsTyping(true);
 
     try {
@@ -53,6 +57,12 @@ export default function App() {
     }
   };
 
+  const handleInput = (e) => {
+    e.target.style.height = "auto";
+    const nextHeight = Math.min(e.target.scrollHeight, 160);
+    e.target.style.height = `${nextHeight}px`;
+  };
+
   // === Handle Enter ===
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -63,65 +73,59 @@ export default function App() {
 
   // === UI ===
   return (
-    <div className="relative min-h-screen w-full flex flex-col bg-black text-white">
-      {/* Aurora Background */}
-      <div id="aurora-bg" />
+    <div className="aurora-app">
+      <div className="aurora-bg" aria-hidden="true">
+        <span className="aurora-orb orb-a" />
+        <span className="aurora-orb orb-b" />
+        <span className="aurora-orb orb-c" />
+        <span className="aurora-sheen" />
+      </div>
 
-      <div className="relative z-10 flex flex-col justify-between h-screen max-w-2xl mx-auto p-4">
-        {/* Logo / Header */}
-        <div className="flex flex-col justify-center items-center py-3">
-          <h1 className="text-3xl font-semibold text-aurora drop-shadow-md">Aurora</h1>
-          <p className="text-xs text-gray-400 mt-1 tracking-wide">
+      <div className="aurora-shell">
+        <header className="aurora-header">
+          <div>
+            <p className="aurora-kicker">Personal AI</p>
+            <h1 className="aurora-title">Aurora Agent</h1>
+          </div>
+          <p className="aurora-subtitle">
             Demo Version • Created by Parsa Meshkini
           </p>
-        </div>
+        </header>
 
-
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-3 bg-transparent backdrop-blur-sm rounded-lg space-y-3">
+        <section className="chat-panel">
           {messages.length === 0 ? (
-            <p className="text-gray-500 italic text-center">
-              Ask Aurora something ✨
-            </p>
+            <p className="empty-state">Ask Aurora something ✨</p>
           ) : (
-            messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`p-3 rounded-lg max-w-[80%] ${
-                  msg.role === "user"
-                    ? "bg-emerald-500/20 self-end text-right"
-                    : "bg-white/10 self-start text-left border border-white/10"
-                }`}
-              >
-                <p className="whitespace-pre-line">{msg.content}</p>
-              </div>
-            ))
+            <div className="chat-stream">
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`message ${msg.role === "user" ? "message-user" : "message-bot"}`}
+                >
+                  <p>{msg.content}</p>
+                </div>
+              ))}
+            </div>
           )}
 
-          {isTyping && (
-            <p className="typing text-green-300 mt-2 animate-pulse">
-              Aurora is typing...
-            </p>
-          )}
-        </div>
+          {isTyping && <p className="typing-indicator">Aurora is typing...</p>}
+        </section>
 
-        {/* Input */}
-        <div className="flex mt-4">
+        <section className="composer">
           <textarea
-            className="flex-1 resize-none p-3 rounded-lg bg-gray-900/70 text-gray-200 focus:outline-none border border-white/10"
+            className="composer-input"
             rows="2"
             placeholder="Type your message..."
             value={message}
+            ref={inputRef}
             onChange={(e) => setMessage(e.target.value)}
+            onInput={handleInput}
             onKeyDown={handleKeyPress}
           />
-          <button
-            onClick={sendMessage}
-            className="ml-2 px-6 py-3 rounded-lg bg-emerald-400/80 hover:bg-emerald-400 text-black font-semibold transition-all"
-          >
+          <button className="composer-send" onClick={sendMessage}>
             Send
           </button>
-        </div>
+        </section>
       </div>
     </div>
   );
